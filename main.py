@@ -1,27 +1,28 @@
-# Trinket IO demo
-# Welcome to CircuitPython! :)
-
 import board
 from digitalio import DigitalInOut, Direction, Pull
-from analogio import AnalogOut, AnalogIn
-import touchio
-from adafruit_hid.keyboard import Keyboard
-from adafruit_hid.keycode import Keycode
-import adafruit_dotstar as dotstar
 import time
 import neopixel
 import random
 
-# Digital input with pullup on D2
 button = DigitalInOut(board.D2)
 button.direction = Direction.INPUT
 button.pull = Pull.UP
 
-analog1in = AnalogIn(board.D0)
-
-# NeoPixel strip (of 16 LEDs) connected on D4
 NUMPIXELS = 12
 neopixels = neopixel.NeoPixel(board.D4, NUMPIXELS, brightness=0.2, auto_write=False)
+
+colour = [127, 0, 127] # start colour
+patterns = [
+  # 'wheel',
+  'chase',
+  'bounce',
+  'knight_rider',
+  'jump_around'
+]
+pattern_index = random.randrange(len(patterns))
+# pattern_index = 4
+shade_step = 16 # how much the colour wanders around
+pattern = patterns[pattern_index]
 
 ######################### HELPERS ##############################
 
@@ -107,21 +108,7 @@ def jump_around(colour):
 
 ######################### MAIN LOOP ##############################
 
-i = 0
-colour = [127, 0, 127]
-patterns = [
-  # 'wheel',
-  'chase',
-  'bounce',
-  'knight_rider',
-  'jump_around'
-]
-
-pattern_index = random.randrange(len(patterns))
-# pattern_index = 4
-shade_step = 16
-
-pattern = patterns[pattern_index]
+# i = 0
 
 while True:
   colour = shade(colour)
@@ -129,11 +116,11 @@ while True:
     for p in [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]:
       tail(colour, p)
 
-  if pattern == 'wheel':
-    for p in range(NUMPIXELS):
-      idx = int ((p * 256 / NUMPIXELS) + i)
-      neopixels[p] = wheel(idx & 255)
-    neopixels.show()
+  # if pattern == 'wheel':
+  #   for p in range(NUMPIXELS):
+  #     idx = int ((p * 256 / NUMPIXELS) + i)
+  #     neopixels[p] = wheel(idx & 255)
+  #   neopixels.show()
 
   if pattern == 'bounce':
     factor = 1.0
@@ -154,4 +141,4 @@ while True:
     pattern = patterns[pattern_index]
     time.sleep(0.5)
 
-  i = (i+1) % 256  # run from 0 to 255
+  # i = (i+1) % 256  # run from 0 to 255 # only useful for `wheel`
