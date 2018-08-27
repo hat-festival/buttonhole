@@ -2,31 +2,19 @@ import time
 from helpers import *
 
 colour = [127, 0, 127] # start colour
-patterns = [
-  'chase',
-  'bounce',
-  'knight_rider',
-  'jump_around',
-  'rain',
-  'fill_up'
-]
-
-patts = []
-
-pattern_index = random.randrange(len(patterns))
-pattern = patterns[pattern_index]
+patterns = []
 
 def chase(colour):
   for p in [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]:
     tail(colour, p)
-patts.append(chase)
+patterns.append(chase)
 
 def bounce(colour):
   factor = 1.0
   while factor > 0.05:
     whole_ring(fade(colour, factor))
     factor *= 0.95
-patts.append(bounce)
+patterns.append(bounce)
 
 def knight_rider(colour):
   delay = 0.07
@@ -53,7 +41,7 @@ def knight_rider(colour):
     neopixels.show()
     time.sleep(delay)
     whole_ring(fade(colour, 0.1))
-patts.append(knight_rider)
+patterns.append(knight_rider)
 
 def jump_around(colour):
   whole_ring(fade(colour, 0.3))
@@ -61,14 +49,14 @@ def jump_around(colour):
     neopixels[random.randrange(12)] = colour
   neopixels.show()
   time.sleep(0.05)
-patts.append(jump_around)
+patterns.append(jump_around)
 
 def rain(colour):
   whole_ring(fade(colour, 0.2))
   neopixels[random.randrange(12)] = colour
   neopixels.show()
   time.sleep(random.randrange(10) * 0.1)
-patts.append(rain)
+patterns.append(rain)
 
 def fill_up(colour):
   lights = set()
@@ -80,15 +68,17 @@ def fill_up(colour):
     time.sleep(0.1)
   time.sleep(0.5)
   bounce(colour)
-patts.append(fill_up)
+patterns.append(fill_up)
+
 
 ######################### MAIN LOOP ##############################
 
 whole_ring(colour)
+pattern_index = random.randrange(len(patterns))
 
 while True:
   colour = shade(colour)
-  patts[pattern_index](colour)
+  patterns[pattern_index](colour)
 
   if not button.value:
     pattern_index += 1
