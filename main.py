@@ -1,7 +1,7 @@
 import time
 from helpers import *
 
-colour = [127, 0, 127] # start colour
+colour = [250, 129, 0] # start colour
 patterns = []
 
 def chase(colour):
@@ -69,7 +69,6 @@ def fill_up(colour):
   time.sleep(0.5)
   bounce(colour)
 patterns.append(fill_up)
-
 
 ######################### MAIN LOOP ##############################
 
