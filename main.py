@@ -103,7 +103,10 @@ while True:
     f.step()
 
     if not button.value:
-        pattern_index = random.randrange(len(patterns))
+        new_index = pattern_index
+        while new_index == pattern_index:
+            new_index = random.randrange(len(patterns))
+        pattern_index = new_index
         f = patterns[pattern_index](colour)
         print(patterns[pattern_index])
         time.sleep(0.5)
